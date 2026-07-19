@@ -614,7 +614,8 @@ func sys_inet_ntop(family: CInt, bytes: UnsafeRawPointer, length: Int) -> String
             return nil
         }
         #else
-        if inet_ntop(family, bytes, addressBytesPtr.baseAddress, socklen_t(length)) == nil {
+        guard let baseAddress = addressBytesPtr.baseAddress else { return nil  }
+        if inet_ntop(family, bytes, baseAddress, socklen_t(length)) == nil {
             return nil
         }
         #endif
